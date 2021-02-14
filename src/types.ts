@@ -1,12 +1,12 @@
 export type invoice = {
-  id: string;
+  // id: string;
   car: inv_car;
   customer: inv_customer;
   ticket: inv_ticket;
 };
 
 export type inv_car = {
-  id: string;
+  id?: string;
   year: string;
   color: string;
   type: string;
@@ -14,24 +14,24 @@ export type inv_car = {
   license: string;
   vin: string;
   milage: string;
-  engine_size: string;
-  tags: string;
+  engine_size?: string;
+  tags?: string;
 };
 
 export type inv_customer = {
-  id: string;
+  id?: string;
   first_name: string;
   last_name: string;
   number: string;
-  number_2: string;
-  address: string;
-  email: string;
+  number_2?: string;
+  address?: string;
+  email?: string;
 };
 
 export type inv_ticket = {
   total: string;
   sub_total: string;
-  service: (inv_part | inv_labor)[];
+  service: (inv_part | inv_labor | undefined)[];
   misc_charges: string;
   save_for_package_job: boolean;
   tax_exempt: boolean;

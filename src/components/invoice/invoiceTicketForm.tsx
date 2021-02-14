@@ -1,9 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { CheckboxField } from '../formik/CheckboxField';
-import { fieldProps } from '../formik/InputField';
 
-export const TicketForm: React.FC<fieldProps> = () => {
+export const TicketForm: React.FC = () => {
   return (
     <>
       <Flex>

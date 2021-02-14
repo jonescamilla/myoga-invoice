@@ -1,0 +1,30 @@
+{
+  "name": "myoga-invoice",
+  "version": "0.1.0",
+  "description": "Front End application that allows a user to create a new invoice; search relevant part labor; and couple more features",
+  "main": "index.ts",
+  "repository": "https://github.com/jonescamilla/myoga-invoice.git",
+  "author": "jon.escamilla <jonathanescamilla1@gmail.com>",
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "prod": "next build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.4",
+    "@chakra-ui/react": "^1.2.1",
+    "@emotion/react": "^11.1.4",
+    "@emotion/styled": "^11.0.0",
+    "framer-motion": "^3.2.2-rc.1",
+    "next": "^10.0.6",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.27",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "typescript": "^4.1.3"
+  }
+}

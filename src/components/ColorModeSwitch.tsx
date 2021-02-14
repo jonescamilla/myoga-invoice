@@ -19,7 +19,6 @@ export const ColorModeSwitch = () => {
         position="fixed"
         top="1rem"
         right="1rem"
-        // color="green"
         onClick={toggleColorMode}
       >
         <VisuallyHidden>Color Mode Toggle</VisuallyHidden>

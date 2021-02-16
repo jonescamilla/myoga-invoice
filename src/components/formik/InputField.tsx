@@ -1,22 +1,18 @@
 import {
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
 } from '@chakra-ui/react';
 import { FastField, FieldProps } from 'formik';
-import { InputHTMLAttributes } from 'react';
-
-export type fieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  name: string;
-  label?: string;
-  placeholder?: string;
-};
+import { fieldProps } from './formikFieldTypes';
 
 export const InputField: React.FC<fieldProps> = ({
   name,
   label,
   placeholder,
+  labelDir,
 }) => {
   return (
     <>
@@ -25,15 +21,17 @@ export const InputField: React.FC<fieldProps> = ({
           const isInvalid = !!meta.error && meta.touched;
           return (
             <FormControl name={name} isInvalid={isInvalid}>
-              {label ? <FormLabel htmlFor={name}>{label}</FormLabel> : null}
-              <Input
-                {...field}
-                id={name}
-                isInvalid={isInvalid}
-                name={name}
-                placeholder={placeholder}
-                errortext={meta.error}
-              ></Input>
+              <Flex flexDir={labelDir || 'column'} p={1}>
+                {label ? <FormLabel htmlFor={name}>{label}</FormLabel> : null}
+                <Input
+                  {...field}
+                  id={name}
+                  isInvalid={isInvalid}
+                  name={name}
+                  placeholder={placeholder}
+                  errortext={meta.error}
+                ></Input>
+              </Flex>
               <FormErrorMessage>{meta.error}</FormErrorMessage>
             </FormControl>
           );

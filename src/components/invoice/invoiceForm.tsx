@@ -41,13 +41,11 @@ const InvoiceForm = () => {
                   </TabPanel>
 
                   <TabPanel>
-                    <TicketForm />
+                    <TicketForm ticket={values.ticket} />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </Form>
-
-            <pre>{JSON.stringify(values, null, 2)}</pre>
           </>
         )}
       </Formik>
@@ -55,4 +53,5 @@ const InvoiceForm = () => {
   );
 };
 
+// <pre>{JSON.stringify(values, null, 2)}</pre>
 export default InvoiceForm;

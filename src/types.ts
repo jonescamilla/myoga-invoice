@@ -37,16 +37,18 @@ export type inv_ticket = {
   tax_exempt: boolean;
 };
 
-type inv_part = {
+export type inv_part = {
   quantity_used: number;
   total: string;
   price: string;
+  description: string;
 };
 
-type inv_labor = {
+export type inv_labor = {
   hours_worked: number;
   total: string;
   price: string;
+  description: string;
 };
 
 export type client = {

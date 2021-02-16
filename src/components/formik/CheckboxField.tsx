@@ -1,7 +1,7 @@
 import { FormControl, FormLabel, Checkbox } from '@chakra-ui/react';
 import { FastField, FieldProps } from 'formik';
 import React from 'react';
-import { fieldProps } from './InputField';
+import { fieldProps } from './formikFieldTypes';
 
 export const CheckboxField: React.FC<fieldProps> = ({ name, label }) => {
   return (

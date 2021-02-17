@@ -8,11 +8,16 @@ import {
 import { FastField, FieldProps } from 'formik';
 import { fieldProps } from './formikFieldTypes';
 
+/**
+ * Custom Formik Field that returns JSX of a Chakra-ui Input w/ predefined styling
+ */
+
 export const InputField: React.FC<fieldProps> = ({
   name,
   label,
   placeholder,
-  labelDir,
+  labelDir = 'column',
+  autoComplete = 'off',
 }) => {
   return (
     <>
@@ -21,9 +26,10 @@ export const InputField: React.FC<fieldProps> = ({
           const isInvalid = !!meta.error && meta.touched;
           return (
             <FormControl name={name} isInvalid={isInvalid}>
-              <Flex flexDir={labelDir || 'column'} p={1}>
+              <Flex flexDir={labelDir} p={1}>
                 {label ? <FormLabel htmlFor={name}>{label}</FormLabel> : null}
                 <Input
+                  autoComplete={autoComplete}
                   {...field}
                   id={name}
                   isInvalid={isInvalid}

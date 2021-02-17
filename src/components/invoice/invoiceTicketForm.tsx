@@ -1,7 +1,7 @@
 import { Button, Flex, FormLabel } from '@chakra-ui/react';
 import { ArrayHelpers, FieldArray } from 'formik';
 import React from 'react';
-import { invoice, inv_ticket } from '../../types';
+import { inv_ticket } from '../../types';
 import { CheckboxField } from '../formik/CheckboxField';
 import { InputField } from '../formik/InputField';
 import {

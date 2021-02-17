@@ -3,6 +3,10 @@ import { FastField, FieldProps } from 'formik';
 import React from 'react';
 import { fieldProps } from './formikFieldTypes';
 
+/**
+ * Custom Formik Field that returns JSX of a Chakra-ui Checkbox w/ predefined styling
+ */
+
 export const CheckboxField: React.FC<fieldProps> = ({ name, label }) => {
   return (
     <FastField name={name}>

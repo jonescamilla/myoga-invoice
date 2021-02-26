@@ -12,11 +12,11 @@ export const initialValues: invoice = {
   car: {
     year: '',
     color: '',
-    type: '',
     make: '',
     license: '',
     vin: '',
     milage: '',
+    model: '',
   },
   ticket: {
     total: '',

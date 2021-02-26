@@ -12,6 +12,7 @@ import React from 'react';
 import { CustomerAndVehicleForm } from './invoiceCustomerAndVehicleForm';
 import { initialValues } from './invoiceInitialValues';
 import { TicketForm } from './invoiceTicketForm';
+import { KbdTooltip } from '../KbdInverted';
 
 /**
  * Form of an invoice utilizing `Formik for form management and `Yup` for validation w/ predefined styling
@@ -26,26 +27,32 @@ const InvoiceForm = () => {
             <Form>
               <Tabs
                 isFitted
-                isManual
+                // isManual
                 variant="solid-rounded"
                 colorScheme="gray"
               >
                 <TabList mb="1em">
-                  <Tab>Customer</Tab>
-                  <Tab>Invoice</Tab>
+                  <KbdTooltip keys={['alt', 'I']}>
+                    <Tab>Invoice</Tab>
+                  </KbdTooltip>
+
+                  <KbdTooltip keys={['alt', 'C']}>
+                    <Tab>Customer</Tab>
+                  </KbdTooltip>
                 </TabList>
 
                 <TabPanels>
                   <TabPanel>
-                    <CustomerAndVehicleForm />
+                    <TicketForm ticket={values.ticket} />
                   </TabPanel>
 
                   <TabPanel>
-                    <TicketForm ticket={values.ticket} />
+                    <CustomerAndVehicleForm />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </Form>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
           </>
         )}
       </Formik>
@@ -53,5 +60,4 @@ const InvoiceForm = () => {
   );
 };
 
-// <pre>{JSON.stringify(values, null, 2)}</pre>
 export default InvoiceForm;

@@ -32,7 +32,7 @@ export const CustomerAndVehicleForm = () => (
     <Flex>
       <InputField label="Year" placeholder="2000" name="car.year" />
       <InputField label="Color" placeholder="Black" name="car.color" />
-      <InputField label="Type" placeholder="Honda" name="car.type" />
+      <InputField label="Model" placeholder="Honda" name="car.model" />
       <InputField label="Make" placeholder="Accord" name="car.make" />
       <InputField label="License" placeholder="1A2B3C4" name="car.license" />
       <InputField label="Vin" placeholder="123ABC" name="car.vin" />

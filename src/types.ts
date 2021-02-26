@@ -9,7 +9,7 @@ export type inv_car = {
   id?: string;
   year: string;
   color: string;
-  type: string;
+  model: string;
   make: string;
   license: string;
   vin: string;
@@ -31,7 +31,7 @@ export type inv_customer = {
 export type inv_ticket = {
   total: string;
   sub_total: string;
-  service: (inv_part | inv_labor | undefined)[];
+  service: (inv_part | inv_labor)[];
   misc_charges: string;
   save_for_package_job: boolean;
   tax_exempt: boolean;

@@ -1,153 +1,144 @@
-import { Box, Button, Flex, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react';
+import { FastField, FieldProps, useFormikContext } from 'formik';
 import React, { useState } from 'react';
+import { invoice } from '../../types';
+import { fieldProps } from '../formik/formikFieldTypes';
 
-type dataType = { name: string; age?: number; position?: string };
-
-type stateType = {
-  data: dataType[];
-  keyword: string;
-  results: dataType[];
+export type AutoCompOptions = {
+  /**
+   * the key that will be matched to user input to generate the suggestions
+   */
+  name: string;
+  /**
+   * all additional keys that may be used by the developer in `resultsRenderer`
+   */
+  [key: string]: any;
 };
 
-const data = [
-  { name: 'Andrew R. Kelly', age: 22, position: 'Janitor' },
-  { name: 'Honda' },
-  { name: 'Adrian Sanchez', age: 30, position: 'Teacher' },
-  { name: 'Anderson Brown', age: 25, position: 'Principal' },
-  { name: 'Anna Valio', age: 30, position: 'guidance councelor' },
-  { name: 'Asha Mathews', age: 50, position: 'Teacher' },
-  { name: 'Alicia keys', age: 25, position: 'Librarian' },
-  { name: 'Alexa Dot', age: 30, position: 'teacher' },
-  { name: 'Bob Squarepants', age: 20, position: 'secretary' },
-];
+type AutoCompInputProps = {
+  options: AutoCompOptions[];
+  /**
+   * The passed function that renders a JSX.Element the way the user intends
+   */
+  resultsRender: (result: AutoCompOptions) => JSX.Element;
+} & fieldProps;
 
 /**
- * Returns on input field that renders autocomplete suggestions
+ * Displays a chakra-ui Input that renders autocomplete suggestions and integrates with formik
  */
+export const AutoCompInput = ({
+  name,
+  label: inputLabel,
+  options,
+  placeholder,
+  resultsRender,
+}: AutoCompInputProps) => {
+  const [userInput, setUserInput] = useState('');
 
-// export const AutoCompInput = ({ data }: { data: dataType }) => {
-export const AutoCompInput = () => {
-  const [state, setState] = useState<stateType>({
-    data: data,
-    keyword: '',
-    results: [],
-  });
+  const [suggestionResults, setSuggestionResults] = useState<AutoCompOptions[]>(
+    []
+  );
+
+  // used to update formik state alongside autocomplete component
+  const { setFieldValue } = useFormikContext<invoice>();
 
   /**
    * Finds matches based on the user's typed input relative to the data
    */
-  const matchName = (name: string, keyword: string) => {
-    name = name.toLowerCase().substring(0, keyword.length);
-    if (keyword == '') return false;
-    return name == keyword.toLowerCase();
+  const matchName = (optionLabel: string, userInput: string) => {
+    const parsedLabel = optionLabel
+      .toLowerCase()
+      .substring(0, userInput.length);
+    if (userInput == '') return false;
+    return parsedLabel === userInput.toLowerCase();
   };
 
   /**
    * set the results to all of the matched data to the user input
    */
   const onSearch = (text: string) => {
-    state.results = []; // clear the array
-    state.data.forEach((item) => {
-      if (true == matchName(item.name, text)) state.results.push(item);
+    const newResults = options.filter((item) => {
+      if (true == matchName(item.name, text)) return true;
+      else return false;
     });
+    setSuggestionResults(newResults);
   };
 
   /**
-   * A generalized function that updates multiple queries based on passed field and value
+   * A generalized function that updates multiple queries based on passed field and value for local Input and for formik
    */
-  const updateField = (field: string, value: any, update = true) => {
+  const updateField = (
+    field: 'keyword' | 'results',
+    value: any,
+    update = true
+  ) => {
     if (update) onSearch(value);
-    setState(() => ({ ...state, [field]: value }));
+    if (field === 'keyword') {
+      setUserInput(value);
+      setFieldValue(name, value);
+    }
+    if (field === 'results') setSuggestionResults(value);
   };
 
-  return (
-    <>
-      <SearchBar
-        results={state.results}
-        keyword={state.keyword}
-        updateField={updateField}
-      />
-      <pre>{JSON.stringify(state.keyword, null, 2)}</pre>
-    </>
-  );
-};
-
-/**
- * Renders the Input and suggestions based on the data passed
- */
-const SearchBar = ({
-  results,
-  keyword,
-  updateField,
-}: {
-  results: dataType[];
-  keyword: string;
-  updateField: (field: string, value: any, update?: boolean) => void;
-}) => {
-  const updateText = (text: string) => {
+  /**
+   * Updates field keyword with text and resets results
+   */
+  const updateKeyword = (text: string) => {
     updateField('keyword', text, false);
     updateField('results', []);
   };
 
-  const cancelSearch = () => updateField('keyword', '');
-
-  const redenderResults = results.map(({ position, name, age }, index) => {
+  /**
+   * Array JSX.Elements that are wrapped in a Chakra-ui box that handles updates based on click of
+   */
+  const renderedResults = suggestionResults.map((item, _index) => {
     return (
-      <SearchPreview
-        key={index}
-        updateText={updateText}
-        index={index}
-        position={position}
-        name={name}
-        age={age}
-      />
+      <Box onClick={() => updateKeyword(item.name)}>{resultsRender(item)}</Box>
     );
   });
 
   return (
-    <Flex flexDir="column" className="auto">
-      <Flex>
-        <Input
-          name="customer.first_name"
-          className="search-bar"
-          placeholder="Search"
-          value={keyword}
-          onChange={(e) => updateField('keyword', e.target.value)}
-        />
+    <FastField name={name}>
+      {({ field, meta }: FieldProps) => {
+        const isInvalid = !!meta.error && meta.touched;
 
-        <Button
-          onClick={() => cancelSearch()}
-          className={`cancel-btn ${keyword.length > 0 ? 'active' : 'inactive'}`}
-        >
-          x
-        </Button>
-      </Flex>
-      <Flex>
-        {results.length > 0 ? (
-          <Box className="search-results">{redenderResults}</Box>
-        ) : null}
-      </Flex>
-    </Flex>
+        return (
+          <>
+            <FormControl name={name} invalid={isInvalid}>
+              <Flex flexDir="column" p={1}>
+                {inputLabel ? (
+                  <FormLabel htmlFor={name}>{inputLabel}</FormLabel>
+                ) : null}
+
+                <Input
+                  {...field}
+                  id={name}
+                  name={name}
+                  placeholder={placeholder}
+                  value={userInput}
+                  onChange={(event: any) => {
+                    const value = event.target.value;
+                    updateField('keyword', value);
+                  }}
+                />
+              </Flex>
+
+              <FormErrorMessage>{meta.error}</FormErrorMessage>
+            </FormControl>
+
+            {suggestionResults.length > 0 ? (
+              <Box position="relative">{renderedResults}</Box>
+            ) : null}
+          </>
+        );
+      }}
+    </FastField>
   );
 };
-
-/**
- * The array of suggestions
- */
-const SearchPreview = ({
-  name,
-  position,
-  index,
-  updateText,
-}: dataType & {
-  index: number;
-  updateText: (text: any) => void;
-}) => (
-  <Box
-    onClick={() => updateText(name)}
-    border="1px"
-    className={`search-preview ${index == 0 ? 'start' : ''}`}
-  >
-    <p className="name">{`${name} - ${position}`}</p>
-  </Box>
-);

@@ -1,15 +1,7 @@
-import {
-  Button,
-  DarkMode,
-  Flex,
-  FormLabel,
-  Kbd,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Button, Flex, FormLabel } from '@chakra-ui/react';
 import { ArrayHelpers, FieldArray } from 'formik';
 import React from 'react';
 import { inv_labor, inv_part, inv_ticket } from '../../types';
-import { AutoCompInput } from '../formik/AutoCompInput';
 import { CheckboxField } from '../formik/CheckboxField';
 import { InputField } from '../formik/InputField';
 import {
@@ -23,6 +15,25 @@ import { KbdTooltip } from '../KbdInverted';
  */
 
 export const TicketForm: React.FC<{ ticket: inv_ticket }> = ({ ticket }) => {
+  /**
+   * returns obj of relevent information used in FieldArray for ticket.service
+   */
+  const getItemInfo = (item: inv_labor | inv_part | undefined) => {
+    return item?.hasOwnProperty('hours_worked')
+      ? {
+          itemName: 'hours_worked',
+          amountLabel: 'Hrs.',
+          label: 'Labor',
+        }
+      : item?.hasOwnProperty('quantity_used')
+      ? {
+          itemName: 'quantity_used',
+          amountLabel: 'Qty.',
+          label: 'Parts',
+        }
+      : { itemName: '', amountLabel: '', label: '' };
+  };
+
   return (
     <>
       <Flex flexDir="column">
@@ -30,7 +41,6 @@ export const TicketForm: React.FC<{ ticket: inv_ticket }> = ({ ticket }) => {
           {({ remove, push }: ArrayHelpers) => {
             return (
               <Flex flexDir="column">
-                <AutoCompInput />
                 {ticket.service.length > 0 &&
                   ticket.service.map((item, index) => {
                     const { itemName, amountLabel, label } = getItemInfo(item);
@@ -90,23 +100,4 @@ export const TicketForm: React.FC<{ ticket: inv_ticket }> = ({ ticket }) => {
       </Flex>
     </>
   );
-};
-
-/**
- * returns obj of relevent information used in FieldArray for ticket.service
- */
-const getItemInfo = (item: inv_labor | inv_part | undefined) => {
-  return item?.hasOwnProperty('hours_worked')
-    ? {
-        itemName: 'hours_worked',
-        amountLabel: 'Hrs.',
-        label: 'Labor',
-      }
-    : item?.hasOwnProperty('quantity_used')
-    ? {
-        itemName: 'quantity_used',
-        amountLabel: 'Qty.',
-        label: 'Parts',
-      }
-    : { itemName: '', amountLabel: '', label: '' };
 };

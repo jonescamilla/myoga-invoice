@@ -1,42 +1,64 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
+import { AutoCompInput } from '../formik/AutoCompInput';
 import { InputField } from '../formik/InputField';
+import { NumberField } from '../formik/NumberField';
 
-export const CustomerAndVehicleForm = () => (
-  <>
-    <Flex>
-      <InputField
-        label="First Name"
-        placeholder="John"
-        name="customer.first_name"
-      />
-      <InputField
-        label="Last Name"
-        placeholder="Smith"
-        type="name"
-        name="customer.last_name"
-      />
-      <InputField
-        label="Phone Number"
-        placeholder="000-000-0000"
-        name="customer.number"
-      />
-      <InputField
-        label="Optional Number"
-        placeholder="000-000-0000"
-        type=""
-        name="customer.number_2"
-      />
-    </Flex>
+export const CustomerAndVehicleForm = () => {
+  const carOptions = [
+    { name: 'Toyota' },
+    { name: 'Ta' },
+    { name: 'Tay' },
+    { name: 'Honda' },
+    { name: 'Nissan' },
+    { name: 'Mercedes Benz' },
+  ];
 
-    <Flex>
-      <InputField label="Year" placeholder="2000" name="car.year" />
-      <InputField label="Color" placeholder="Black" name="car.color" />
-      <InputField label="Model" placeholder="Honda" name="car.model" />
-      <InputField label="Make" placeholder="Accord" name="car.make" />
-      <InputField label="License" placeholder="1A2B3C4" name="car.license" />
-      <InputField label="Vin" placeholder="123ABC" name="car.vin" />
-      <InputField label="milage" placeholder="000,000" name="car.milage" />
-    </Flex>
-  </>
-);
+  const resultsRender = ({ name }: any) => <Box border="1px">{name}</Box>;
+
+  return (
+    <>
+      <Flex>
+        <AutoCompInput
+          name="customer.first_name"
+          label="First Name"
+          placeholder=""
+          options={carOptions}
+          resultsRender={resultsRender}
+        />
+
+        <AutoCompInput
+          name="customer.last_name"
+          label="Last Name"
+          placeholder=""
+          options={carOptions}
+          resultsRender={resultsRender}
+        />
+
+        <NumberField name="customer.number" label="PhoneNumber" />
+        {/*
+<InputField
+          label="Phone Number"
+          placeholder="000-000-0000"
+          name="customer.number"
+        />
+  */}
+        <InputField
+          label="Optional Number"
+          placeholder="000-000-0000"
+          name="customer.number_2"
+        />
+      </Flex>
+
+      <Flex>
+        <InputField label="Year" placeholder="0000" name="car.year" />
+        <InputField label="Make" placeholder="Honda" name="car.make" />
+        <InputField label="Model" placeholder="Accord" name="car.model" />
+        <InputField label="License" placeholder="1A2B3C4" name="car.license" />
+        <InputField label="Vin" placeholder="123ABC" name="car.vin" />
+        <InputField label="milage" placeholder="000,000" name="car.milage" />
+        <InputField label="Color" placeholder="Black" name="car.color" />
+      </Flex>
+    </>
+  );
+};
